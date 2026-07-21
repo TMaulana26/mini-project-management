@@ -28,16 +28,17 @@ services:
       - app
 
   db:
-    image: mysql:8.0
+    image: postgres:16-alpine
     container_name: mpm_db
     restart: unless-stopped
     ports:
-      - "3306:3306"
+      - "5432:5432"
     environment:
-      MYSQL_DATABASE: mini_project_management
-      MYSQL_ROOT_PASSWORD: root
+      POSTGRES_DB: mini_project_management
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: postgres
     volumes:
-      - mpm_db_data:/var/lib/mysql
+      - mpm_db_data:/var/lib/postgresql/data
     networks:
       - mpm_network
 

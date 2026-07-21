@@ -10,8 +10,9 @@ RUN apk add --no-cache \
     unzip \
     oniguruma-dev \
     libxml2-dev \
+    postgresql-dev \
     $PHPIZE_DEPS \
-    && docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath gd \
+    && docker-php-ext-install pdo_mysql pdo_pgsql mbstring zip exif pcntl bcmath gd \
     && apk del --no-cache $PHPIZE_DEPS
 
 # Get latest Composer

@@ -25,5 +25,6 @@ class Permission extends SpatiePermission
 
     protected $casts = [
         'is_active' => 'boolean',
+        'menu' => 'json',
     ];
 }

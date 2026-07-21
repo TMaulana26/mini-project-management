@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AclDatabaseSeeder::class,
             AuthDatabaseSeeder::class,
+            SaaSFixtureSeeder::class,
         ]);
     }
 }

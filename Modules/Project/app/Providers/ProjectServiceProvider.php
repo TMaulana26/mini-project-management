@@ -4,10 +4,10 @@ namespace Modules\Project\Providers;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Gate;
-use Modules\Project\app\Models\Project;
-use Modules\Project\app\Models\Task;
-use Modules\Project\app\Policies\ProjectPolicy;
-use Modules\Project\app\Policies\TaskPolicy;
+use Modules\Project\Models\Project;
+use Modules\Project\Models\Task;
+use Modules\Project\Policies\ProjectPolicy;
+use Modules\Project\Policies\TaskPolicy;
 use Nwidart\Modules\Support\ModuleServiceProvider;
 
 class ProjectServiceProvider extends ModuleServiceProvider

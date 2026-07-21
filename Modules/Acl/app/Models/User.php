@@ -13,7 +13,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\Auth\Notifications\CustomResetPassword;
 use Modules\Auth\Notifications\CustomVerifyEmail;
-use Modules\Company\app\Models\Company;
+use Modules\Company\Models\Company;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;

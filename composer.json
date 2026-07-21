@@ -10,8 +10,15 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "dedoc/scramble": "*",
+        "laravel/fortify": "*",
         "laravel/framework": "^13.8",
-        "laravel/tinker": "^3.0"
+        "laravel/sanctum": "*",
+        "laravel/tinker": "^3.0",
+        "nwidart/laravel-modules": "*",
+        "spatie/laravel-medialibrary": "*",
+        "spatie/laravel-permission": "*",
+        "spatie/laravel-translatable": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -27,6 +34,18 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
+            "Modules\\Acl\\": "Modules/Acl/app/",
+            "Modules\\Acl\\Database\\Factories\\": "Modules/Acl/database/factories/",
+            "Modules\\Acl\\Database\\Seeders\\": "Modules/Acl/database/seeders/",
+            "Modules\\Auth\\": "Modules/Auth/app/",
+            "Modules\\Auth\\Database\\Factories\\": "Modules/Auth/database/factories/",
+            "Modules\\Auth\\Database\\Seeders\\": "Modules/Auth/database/seeders/",
+            "Modules\\Company\\": "Modules/Company/app/",
+            "Modules\\Company\\Database\\Factories\\": "Modules/Company/database/factories/",
+            "Modules\\Company\\Database\\Seeders\\": "Modules/Company/database/seeders/",
+            "Modules\\Project\\": "Modules/Project/app/",
+            "Modules\\Project\\Database\\Factories\\": "Modules/Project/database/factories/",
+            "Modules\\Project\\Database\\Seeders\\": "Modules/Project/database/seeders/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }
@@ -84,7 +103,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "wikimedia/composer-merge-plugin": true
         }
     },
     "minimum-stability": "stable",

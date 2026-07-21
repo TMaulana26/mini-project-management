@@ -1,0 +1,6 @@
+{
+    "Acl": true,
+    "Auth": true,
+    "Company": true,
+    "Project": true
+}

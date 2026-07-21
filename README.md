@@ -56,3 +56,22 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+---
+
+## SaaS Multi-Tenancy & Concurrency Locking Strategy
+
+### 1. Row-Level Tenant Isolation
+We implement zero-tolerance tenant isolation using:
+- **Global Scope Scoping:** The `TenantScope` class automatically appends a `WHERE company_id = auth()->user()->company_id` filter on all queries targetting tenant-scoped models (`Project`, `Task`, `AuditLog`).
+- **Unified Resolution:** The tenant context is strictly resolved from the authenticated user context (`auth()->user()->company_id`) in `BelongsToTenant` during model creation, avoiding unsafe URL or request payload resolver hacks.
+- **Nested Resource Route Safety:** `TaskController` manually verifies that nested task resources belong to the mapped project (`$task->project_id === $project->id`) to prevent unauthorized cross-project data tampering.
+
+### 2. Concurrency & Race Condition Handling
+To prevent race conditions during concurrent modifications (especially when multiple members or admins edit status or assignees):
+- **Database Transactions:** All multi-row updates and dependent operations (e.g. creating/updating tasks and triggering async queued jobs) are wrapped in `DB::transaction()`.
+- **Pessimistic Locking:** In `TaskController@update`, we retrieve the task model inside the transaction using `Task::lockForUpdate()->findOrFail($id)`. This blocks concurrent read-for-updates/writes on that specific database row until the active transaction commits, ensuring state updates remain sequential and correct.
+
+### 3. Isolated Audit Trail
+Data modifications (`created`, `updated`, `deleted`) on `Project` and `Task` are automatically logged via the `Auditable` trait. Since the `AuditLog` model is hooked up to `BelongsToTenant`, audit trail queries are securely restricted to the user's company context.
+

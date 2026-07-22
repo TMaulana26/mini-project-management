@@ -4,8 +4,10 @@ namespace Modules\Project\Providers;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Gate;
+use Modules\Project\Models\Comment;
 use Modules\Project\Models\Project;
 use Modules\Project\Models\Task;
+use Modules\Project\Policies\CommentPolicy;
 use Modules\Project\Policies\ProjectPolicy;
 use Modules\Project\Policies\TaskPolicy;
 use Nwidart\Modules\Support\ModuleServiceProvider;
@@ -48,6 +50,7 @@ class ProjectServiceProvider extends ModuleServiceProvider
 
         Gate::policy(Project::class, ProjectPolicy::class);
         Gate::policy(Task::class, TaskPolicy::class);
+        Gate::policy(Comment::class, CommentPolicy::class);
     }
 
     /**

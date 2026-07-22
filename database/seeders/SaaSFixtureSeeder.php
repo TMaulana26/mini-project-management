@@ -8,6 +8,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Modules\Acl\Models\User;
 use Modules\Company\Models\Company;
+use Modules\Project\Models\Comment;
 use Modules\Project\Models\Project;
 use Modules\Project\Models\Task;
 use Spatie\Permission\PermissionRegistrar;
@@ -55,6 +56,17 @@ class SaaSFixtureSeeder extends Seeder
         );
         $dimensionMember->assignRole('Member');
 
+        $dimensionMember2 = User::firstOrCreate(
+            ['email' => 'member2@dimension.com'],
+            [
+                'name' => 'Dimension Support',
+                'company_id' => $dimension->id,
+                'password' => Hash::make('password'),
+                'is_active' => true,
+            ]
+        );
+        $dimensionMember2->assignRole('Member');
+
         // -- Acme Users --
         $acmeAdmin = User::firstOrCreate(
             ['email' => 'admin@acme.com'],
@@ -78,6 +90,17 @@ class SaaSFixtureSeeder extends Seeder
             ]
         );
         $acmeMember->assignRole('Member');
+
+        $acmeMember2 = User::firstOrCreate(
+            ['email' => 'member2@acme.com'],
+            [
+                'name' => 'Acme Developer',
+                'company_id' => $acme->id,
+                'password' => Hash::make('password'),
+                'is_active' => true,
+            ]
+        );
+        $acmeMember2->assignRole('Member');
 
         // 3. Create Projects (using company_id injection)
         // -- Dimension Projects --
@@ -164,5 +187,78 @@ class SaaSFixtureSeeder extends Seeder
                 'assigned_to_user_id' => $acmeMember->id,
             ]
         );
+
+        // 5. Create Comments
+        $dimensionTask1 = Task::where('title', 'Implement Multi-Tenancy Scoping')->first();
+        if ($dimensionTask1) {
+            Comment::firstOrCreate([
+                'task_id' => $dimensionTask1->id,
+                'company_id' => $dimension->id,
+                'user_id' => $dimensionAdmin->id,
+                'content' => 'Please verify the TenantScope applies strictly to all query scopes.',
+            ]);
+
+            Comment::firstOrCreate([
+                'task_id' => $dimensionTask1->id,
+                'company_id' => $dimension->id,
+                'user_id' => $dimensionMember->id,
+                'content' => 'I have verified it, everything looks secure!',
+            ]);
+
+            Comment::firstOrCreate([
+                'task_id' => $dimensionTask1->id,
+                'company_id' => $dimension->id,
+                'user_id' => $dimensionMember2->id,
+                'content' => 'Can we also verify that nested relationships are covered by tests?',
+            ]);
+
+            Comment::firstOrCreate([
+                'task_id' => $dimensionTask1->id,
+                'company_id' => $dimension->id,
+                'user_id' => $dimensionAdmin->id,
+                'content' => 'Yes, let\'s write some Pest integration tests for that.',
+            ]);
+        }
+
+        $dimensionTask2 = Task::where('title', 'Configure Global Exception Envelope')->first();
+        if ($dimensionTask2) {
+            Comment::firstOrCreate([
+                'task_id' => $dimensionTask2->id,
+                'company_id' => $dimension->id,
+                'user_id' => $dimensionMember->id,
+                'content' => 'Starting work on custom exception handler bootstrapper.',
+            ]);
+
+            Comment::firstOrCreate([
+                'task_id' => $dimensionTask2->id,
+                'company_id' => $dimension->id,
+                'user_id' => $dimensionMember2->id,
+                'content' => 'Make sure ValidationException formats the error payload cleanly.',
+            ]);
+        }
+
+        $acmeTask1 = Task::where('title', 'Design Acme Landing Page')->first();
+        if ($acmeTask1) {
+            Comment::firstOrCreate([
+                'task_id' => $acmeTask1->id,
+                'company_id' => $acme->id,
+                'user_id' => $acmeAdmin->id,
+                'content' => 'Need approval on the design assets before coding.',
+            ]);
+
+            Comment::firstOrCreate([
+                'task_id' => $acmeTask1->id,
+                'company_id' => $acme->id,
+                'user_id' => $acmeMember->id,
+                'content' => 'I will upload the mockup design files soon.',
+            ]);
+
+            Comment::firstOrCreate([
+                'task_id' => $acmeTask1->id,
+                'company_id' => $acme->id,
+                'user_id' => $acmeMember2->id,
+                'content' => 'I can start working on the HTML layout once mockups are ready.',
+            ]);
+        }
     }
 }
